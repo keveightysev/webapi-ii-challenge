@@ -53,21 +53,20 @@ router.post('/', async (req, res) => {
 	}
 });
 
-router.delete('/:id', (req, res) => {
-	const { id } = req.params;
-	db.remove(id)
-		.then(deleted => {
-			if (deleted) {
-				res.status(204).end();
-			} else {
-				res
-					.status(404)
-					.json({ message: 'The user with the specified ID does not exist.' });
-			}
-		})
-		.catch(err => {
-			res.status(500).json({ error: 'The user could not be removed' });
-		});
+router.delete('/:id', async (req, res) => {
+	try {
+		const postDelete = await db.remove(req.params.id);
+		if (postDelete > 0) {
+			res.status(200).end();
+		} else {
+			res
+				.status(404)
+				.json({ message: 'The post with the specified ID does not exist.' });
+		}
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ error: 'The post could not be removed' });
+	}
 });
 
 router.put('/:id', (req, res) => {
