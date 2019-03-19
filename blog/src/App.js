@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Route } from 'react-router-dom';
 
 import PostList from './components/PostList';
+import Post from './components/Post';
 
 class App extends React.Component {
 	state = {
@@ -27,6 +28,10 @@ class App extends React.Component {
 				<Route
 					path='/'
 					render={props => <PostList {...props} posts={this.state.posts} />}
+				/>
+				<Route
+					path='/post/:id'
+					render={props => <Post {...props} posts={this.state.posts} />}
 				/>
 			</div>
 		);
