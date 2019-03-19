@@ -7,6 +7,7 @@ import { Route } from 'react-router-dom';
 import PostList from './components/PostList';
 import Post from './components/Post';
 import AddPost from './components/AddPost';
+import Blank from './components/Blank';
 
 class App extends React.Component {
 	state = {
@@ -40,9 +41,16 @@ class App extends React.Component {
 						path='/'
 						render={props => <PostList {...props} posts={this.state.posts} />}
 					/>
+					<Route path='/' exact component={Blank} />
 					<Route
 						path='/post/:id'
-						render={props => <Post {...props} posts={this.state.posts} />}
+						render={props => (
+							<Post
+								{...props}
+								posts={this.state.posts}
+								updateParent={this.updateParent}
+							/>
+						)}
 					/>
 					<Route
 						path='/addpost'
