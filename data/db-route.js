@@ -69,30 +69,29 @@ router.delete('/:id', async (req, res) => {
 	}
 });
 
-router.put('/:id', (req, res) => {
-	const { id } = req.params;
-	const updateUser = req.body;
-	if (!updateUser.name || !updateUser.bio) {
-		res
-			.status(400)
-			.json({ errorMessage: 'Please provide name and bio for the user.' });
+router.put('/:id', async (req, res) => {
+	if (!req.body.title || !req.body.contents) {
+		res.status(400).json({
+			errorMessage: 'Please provide title and contents for the post.',
+		});
 		return;
 	}
-	db.update(id, updateUser)
-		.then(updated => {
-			if (updated === 0) {
-				res
-					.status(404)
-					.json({ message: 'The user with the specified ID does not exist.' });
-			} else {
-				res.status(200).json(updated);
-			}
-		})
-		.catch(err => {
+	try {
+		const post = await db.update(req.params.id, req.body);
+		const updatedPost = await db.findById(post);
+		if (post) {
+			res.status(200).json(updatedPost);
+		} else {
 			res
-				.status(500)
-				.json({ error: 'The user information could not be modified.' });
-		});
+				.status(404)
+				.json({ message: 'The post with the specified ID does not exist.' });
+		}
+	} catch (err) {
+		console.log(err);
+		res
+			.status(500)
+			.json({ error: 'The post information could not be modified.' });
+	}
 });
 
 module.exports = router;
