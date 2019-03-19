@@ -13,7 +13,20 @@ code {
 		monospace;
 }
 
+.posts-container {
+	display: flex;
+	justify-content: space-around;
+}
+
 .post-list {
 	display: flex;
 	flex-direction: column;
+	width: 15%;
+	overflow: hidden;
+	flex-wrap: nowrap;
+	white-space: nowrap;
+}
+
+.post {
+	width: 80%;
 }

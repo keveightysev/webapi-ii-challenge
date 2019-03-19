@@ -14,11 +14,11 @@ class Post extends React.Component {
 			return <h3>Loading post...</h3>;
 		}
 		return (
-			<>
+			<div className='post'>
 				<h2>{post.title}</h2>
 				<p>Posted {moment(post.created_at, 'YYYY-MM-DD HH:mm:ss').fromNow()}</p>
 				<p>{post.contents}</p>
-			</>
+			</div>
 		);
 	}
 }

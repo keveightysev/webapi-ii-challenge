@@ -6,6 +6,7 @@ import { Route } from 'react-router-dom';
 
 import PostList from './components/PostList';
 import Post from './components/Post';
+import AddPost from './components/AddPost';
 
 class App extends React.Component {
 	state = {
@@ -21,18 +22,35 @@ class App extends React.Component {
 		}
 	}
 
+	updateParent = async () => {
+		try {
+			const res = await axios.get('http://localhost:4000/api/posts/');
+			this.setState({ posts: res.data });
+		} catch (err) {
+			console.log(err.message);
+		}
+	};
+
 	render() {
 		return (
 			<div>
 				<h1>A BLOG!!!!</h1>
-				<Route
-					path='/'
-					render={props => <PostList {...props} posts={this.state.posts} />}
-				/>
-				<Route
-					path='/post/:id'
-					render={props => <Post {...props} posts={this.state.posts} />}
-				/>
+				<div className='posts-container'>
+					<Route
+						path='/'
+						render={props => <PostList {...props} posts={this.state.posts} />}
+					/>
+					<Route
+						path='/post/:id'
+						render={props => <Post {...props} posts={this.state.posts} />}
+					/>
+					<Route
+						path='/addpost'
+						render={props => (
+							<AddPost {...props} updateParent={this.updateParent} />
+						)}
+					/>
+				</div>
 			</div>
 		);
 	}
